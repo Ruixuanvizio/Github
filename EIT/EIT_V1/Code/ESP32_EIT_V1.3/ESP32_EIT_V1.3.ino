@@ -12,15 +12,15 @@ void setup() {
 
   // 初始化辅助芯片（按需保留）
   AD9834_Init();
-  AD9834_SetFrequency(30000.0f, 0);
+  AD9834_SetFrequency(80000.0f, 0);
   AD9834_SetWaveform(0);
   AD5621_Init();
-  AD5621_SetVoltage(0.5);
+  AD5621_SetVoltage(1.10);
   AD5165_Init();
   AD5165_SetRWA(50.0f);
   mcp_init();
   mux_set_porta(0, 1);
-  mux_set_portb(2, 3);
+  mux_set_portb(0, 1);
   ad9240_get_peak();  // 调用一次，输出一次峰峰值
 
   // 初始化AD9240
@@ -31,8 +31,10 @@ void setup() {
 // 主函数仅做两件事：监听串口指令 + 调用采集处理函数
 void loop() {
   // 监听串口指令：收到'c'启动采集
-  mux_set_porta(0, 1);
-  mux_set_portb(2, 3);
+  mux_set_porta(0, 15);
+  mux_set_portb(0, 15);
+  //ad9240_get_peak();  // 调用一次，输出一次峰峰值
+  delay(200);
  if (Serial.available() > 0) {
     char cmd = Serial.read();
     if (cmd == 'c') {
